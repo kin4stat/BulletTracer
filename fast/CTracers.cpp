@@ -83,7 +83,7 @@ void CTracers::AddTracer(CVector origin, CVector target, unsigned char eType, un
 }
 
 // Собственно сама функция хука, чтобы узнать почему здесь __fastcall и непонятный аргумент void* EDX - смотреть CTracers.h
-void __fastcall CTracers::DoBulletImpactHooked(void* weapon, void* EDX,CEntity* owner, CEntity* victim, CVector* startPoint, CVector* endPoint, CColPoint* colPoint, int arg5) {
+void __fastcall CTracers::DoBulletImpactHooked(void* weapon, void* EDX, CEntity* owner, CEntity* victim, CVector* startPoint, CVector* endPoint, CColPoint* colPoint, int arg5) {
 	// Проверяем, попала ли пуля куда-то, иначе нас крашнет
 	if (victim != nullptr) {
 		// Проверяем кто выпустил пулю игрок, или другой пед

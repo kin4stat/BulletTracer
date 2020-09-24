@@ -21,8 +21,8 @@ void show_cursor(bool show)
 		patcher::fill(0x541DF5, 5, 0x90, true); // don't call CControllerConfigManager::AffectPadFromKeyBoard
 		patcher::fill(0x53F417, 5, 0x90, true); // don't call CPad__getMouseState
 		patcher::setRaw(0x53F41F, "\x33\xC0\x0F\x84", 4, true); // test eax, eax -> xor eax, eax
-														// jl loc_53F526 -> jz loc_53F526
-		patcher::PutRetn(0x6194A0, true); // disable RsMouseSetPos (ret)
+																// jl loc_53F526 -> jz loc_53F526
+		patcher::PutRetn(0x6194A0, true);						// disable RsMouseSetPos (ret)
 		ImGui::GetIO().MouseDrawCursor = true;
 		(*(IDirect3DDevice9**)0xC97C28)->ShowCursor(true);
 		

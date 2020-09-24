@@ -1,13 +1,13 @@
-//#pragma comment(linker, "/MERGE:.data=.text")
+п»ї//#pragma comment(linker, "/MERGE:.data=.text")
 //#pragma comment(linker, "/MERGE:.rdata=.text")
 //#pragma comment(linker, "/SECTION:.text,EWR")
 
 #include "dllmain.h"
-// Для хуков будем использовать MinHook
+// Р”Р»СЏ С…СѓРєРѕРІ Р±СѓРґРµРј РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ MinHook
 #include "MinHook.h"
 #pragma comment(lib, "libMinHook-x86-v141-md.lib")
 
-// Определяем экспортнутые указатели
+// РћРїСЂРµРґРµР»СЏРµРј СЌРєСЃРїРѕСЂС‚РЅСѓС‚С‹Рµ СѓРєР°Р·Р°С‚РµР»Рё
 
 CD3DHook*	pD3DHook;
 CConfig*	pConfig;
@@ -19,12 +19,12 @@ int __stdcall DllMain(HMODULE hModule, unsigned long ul_reason_for_call, void* l
 {
     if (ul_reason_for_call ==  DLL_PROCESS_ATTACH)
     {
-		// Проверяем название файла, если не совпадает с нашим модулем - выгружаемся
+		// РџСЂРѕРІРµСЂСЏРµРј РЅР°Р·РІР°РЅРёРµ С„Р°Р№Р»Р°, РµСЃР»Рё РЅРµ СЃРѕРІРїР°РґР°РµС‚ СЃ РЅР°С€РёРј РјРѕРґСѓР»РµРј - РІС‹РіСЂСѓР¶Р°РµРјСЃСЏ
 		if (GetModuleHandleA("BulletTracersByKiN4StAt.asi") != hModule)
 			return 0;
-		// Инициализируем библиотеку хуков
+		// РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј Р±РёР±Р»РёРѕС‚РµРєСѓ С…СѓРєРѕРІ
 		MH_Initialize();
-		// Создаем объекты классов
+		// РЎРѕР·РґР°РµРј РѕР±СЉРµРєС‚С‹ РєР»Р°СЃСЃРѕРІ
 		pConfig		= new CConfig();
 		pD3DHook	= new CD3DHook();
 		pTracers	= new CTracers();

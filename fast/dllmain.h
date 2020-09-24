@@ -1,6 +1,7 @@
-#pragma once
+п»ї#pragma once
 #define WIN32_LEAN_AND_MEAN
 #pragma execution_character_set("utf-8")
+
 #include <Windows.h>
 #include "game_sa.h"
 #include "D3D/d3dhook.h"
@@ -8,7 +9,7 @@
 #include "CMenu.h"
 #include "CConfig.h"
 
-// Экспортируем указатели, чтобы можно было использовать в других файлах.
+// Р­РєСЃРїРѕСЂС‚РёСЂСѓРµРј СѓРєР°Р·Р°С‚РµР»Рё, С‡С‚РѕР±С‹ РјРѕР¶РЅРѕ Р±С‹Р»Рѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РІ РґСЂСѓРіРёС… С„Р°Р№Р»Р°С….
 
 extern CConfig*		pConfig;
 extern CMenu*		pMenu;

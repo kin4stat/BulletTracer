@@ -1,6 +1,6 @@
-#include "CConfig.h"
+ï»¿#include "CConfig.h"
 
-// Îïðåäåëÿåì ðàçìåð ìàññèâà, ÷òîáû â áóäóùåì íå áåãàòü ïî âñåìó ôàéëó è ïðàâèòü ïðè ñìåíå ðàçìåðà ìàññèâà.
+// ÐžÐ¿Ñ€ÐµÐ´ÐµÐ»ÑÐµÐ¼ Ñ€Ð°Ð·Ð¼ÐµÑ€ Ð¼Ð°ÑÑÐ¸Ð²Ð°, Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ð² Ð±ÑƒÐ´ÑƒÑ‰ÐµÐ¼ Ð½Ðµ Ð±ÐµÐ³Ð°Ñ‚ÑŒ Ð¿Ð¾ Ð²ÑÐµÐ¼Ñƒ Ñ„Ð°Ð¹Ð»Ñƒ Ð¸ Ð¿Ñ€Ð°Ð²Ð¸Ñ‚ÑŒ Ð¿Ñ€Ð¸ ÑÐ¼ÐµÐ½Ðµ Ñ€Ð°Ð·Ð¼ÐµÑ€Ð° Ð¼Ð°ÑÑÐ¸Ð²Ð°.
 
 #define COLORS_SIZE 7 * 2 * 4 * sizeof(float)
 
@@ -26,7 +26,7 @@ void CConfig::LoadSettings() {
 	this->iTracersCount = this->pReg->ReadInteger("iTracersCount");
 	this->iTracerTime = this->pReg->ReadInteger("iTracersTime");
 	this->iButtonMenuOpen = this->pReg->ReadInteger("iButtonMenuOpen");
-	// Åñëè ïðîèçîøëà îøèáêà çàãðóçêè, âûñòàâëÿåì ñòàíäàðòíûå çíà÷åíèÿ
+	// Ð•ÑÐ»Ð¸ Ð¿Ñ€Ð¾Ð¸Ð·Ð¾ÑˆÐ»Ð° Ð¾ÑˆÐ¸Ð±ÐºÐ° Ð·Ð°Ð³Ñ€ÑƒÐ·ÐºÐ¸, Ð²Ñ‹ÑÑ‚Ð°Ð²Ð»ÑÐµÐ¼ ÑÑ‚Ð°Ð½Ð´Ð°Ñ€Ñ‚Ð½Ñ‹Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ
 	if (pReg->IsError()) {
 		this->LoadDefaults();
 	}

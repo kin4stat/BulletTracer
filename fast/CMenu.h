@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 struct IDirect3DDevice9;
 
