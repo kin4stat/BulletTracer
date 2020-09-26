@@ -1,6 +1,11 @@
-#pragma once
+﻿#pragma once
 #include <cstddef>
 #include <cstdint>
+
+/* 
+	Небольшой namespace патчера, накиданный на коленке
+	для более удобного патчинга игры
+*/
 
 namespace patcher {
 	void setUChar(uint32_t addr, unsigned char setChar, bool virtualProtect);

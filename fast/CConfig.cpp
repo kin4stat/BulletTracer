@@ -1,14 +1,19 @@
 ﻿#include "CConfig.h"
 
-// Определяем размер массива, чтобы в будущем не бегать по всему файлу и править при смене размера массива.
-
+/* 
+	Определяем размер массива, чтобы в будущем не бегать по всему файлу и править при смене размера массива.
+	Я делаю это через define, т.к. VS подсвечивает макросы, а глобальные константы - нет
+*/
 #define COLORS_SIZE 7 * 2 * 4 * sizeof(float)
 
+// Определяем конструктор
 CConfig::CConfig() {
+	// Создаем объект класса CLiteRegeditEasy для работы с регистром
 	this->pReg = new CLiteRegeditEasy(HKEY_CURRENT_USER, "Software\\BulletTracerKiN4");
 	this->LoadSettings();
 }
 
+// Определяем деструктор
 CConfig::~CConfig() {
 	this->SaveSettings();
 	delete this->pReg;
@@ -33,6 +38,8 @@ void CConfig::LoadSettings() {
 }
 
 void CConfig::SaveSettings() {
+	// Сохраняем все цвета
+	// Float сохраняется в HEX коде!
 	for (int i = 0; i < 14; i++) {
 		for (int k = 0; k < 4; k++) {
 			char buffer[128];
@@ -40,6 +47,7 @@ void CConfig::SaveSettings() {
 			this->pReg->WriteFloat(buffer, this->fColors[i][k]);
 		}
 	}
+	// И другие параметры
 	this->pReg->WriteString("sButtonName", this->sButtonName.c_str());
 	this->pReg->WriteInteger("iTracersCount", this->iTracersCount);
 	this->pReg->WriteInteger("iTracersTime", this->iTracerTime);
@@ -47,6 +55,9 @@ void CConfig::SaveSettings() {
 }
 
 void CConfig::LoadDefaults() {
+	/* 
+		Ставим все в дефолт
+	*/
 	memset(this->fColors, 0, COLORS_SIZE);
 	this->iButtonMenuOpen = VK_F2;
 	this->iTracersCount = 100;

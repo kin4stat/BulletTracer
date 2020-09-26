@@ -175,7 +175,6 @@
     <ClCompile Include="D3D\d3dhook.cpp" />
     <ClCompile Include="D3D\d3drender.cpp" />
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="game_sa.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\imgui_demo.cpp" />
     <ClCompile Include="ImGui\imgui_draw.cpp" />

@@ -7,6 +7,7 @@
 // Трамлин - штука которую можно вызвать, и тогда выполнится затертая хуком часть, и продолжится выполнение оригинальной функции
 static CTracers::DoBulletImpact fpDoImpact = 0;
 
+// Конструктор
 CTracers::CTracers() {
 	// Устанавливаем хук на функцию CWeapon::DoBulletImpact
 	MH_CreateHook((void*)0x73B550, &pTracers->DoBulletImpactHooked, reinterpret_cast<LPVOID*>(&fpDoImpact));
@@ -14,6 +15,7 @@ CTracers::CTracers() {
 	MH_EnableHook((void*)0x73B550);
 }
 
+// Деструктор
 CTracers::~CTracers() {
 	MH_DisableHook((void*)0x726AF0);
 }
@@ -48,21 +50,33 @@ DWORD CTracers::floatToHex(float* color, bool colType) {
 		return D3DCOLOR_ARGB(static_cast<int>(color[3] * 255.0f), static_cast<int>(color[0] * 255.0f), static_cast<int>(color[1] * 255.0f), static_cast<int>(color[2] * 255.0f));
 	return D3DCOLOR_XRGB(static_cast<int>(color[0] * 255.0f), static_cast<int>(color[1] * 255.0f), static_cast<int>(color[2] * 255.0f));
 }
+
 // Рендер трасеров
 void CTracers::Render() {
 	
 	for (int i = 0; i < pConfig->iTracersCount; i++) {
 		float originX, originY, originZ, targetX, targetY, targetZ;
+
+		// Получаем координаты точек начала и конца трасера для дальнейшего рисования
 		bool resultOrigin = this->GetScreenCoords(originX, originY, originZ, &this->tracers[i].fOrigin);
 		bool resultTarget = this->GetScreenCoords(targetX, targetY, targetZ, &this->tracers[i].fTarget);
 
-		if (tracers[i].eType != 0xff && resultOrigin && resultTarget) {
-
-			if (GetTickCount64() - tracers[i].uLongTicks < pConfig->iTracerTime * 1000) {
-
-				pD3DHook->pRender->Line(originX, originY, targetX, targetY, 
-					this->floatToHex(pConfig->fColors[this->tracers[i].eType + 7 * this->tracers[i].bOwner]));
+		if (tracers[i].eType != 0xff) {
+			if (resultOrigin && resultTarget) {
+				// Проверяем, сколько секунд назад был создан трасер
+				if (GetTickCount64() - tracers[i].uLongTicks < pConfig->iTracerTime * 1000) {
+					// Рисуем Линию, цвет берем из конфига и конвертируем его из float [4] в D3DCOLOR(ARGB)
+					pD3DHook->pRender->Line(originX, originY, targetX, targetY,
+						this->floatToHex(pConfig->fColors[this->tracers[i].eType + 7 * this->tracers[i].bOwner]));
+				}
 			}
+		}
+		else {
+			/*
+				Можем выйти из цикла, т.к. мы нашли пустой элемент,
+				А массив заполняется последовательно
+			*/
+			break;
 		}
 	}
 }
@@ -74,6 +88,8 @@ void CTracers::AddTracer(CVector origin, CVector target, unsigned char eType, un
 	}
 	// Просто по приколу проверяем
 	if (eType != ENTITY_TYPE_NOTHING) {
+		// После смещения на 1, ставим в данные первого элемента
+		// Данные нового трасера
 		tracers[0].eType = eType;
 		tracers[0].fOrigin = origin;
 		tracers[0].fTarget = target;
@@ -91,6 +107,6 @@ void __fastcall CTracers::DoBulletImpactHooked(void* weapon, void* EDX, CEntity*
 		// Добавляем трасер
 		pTracers->AddTracer(*startPoint, colPoint->m_vecPoint, victim->m_nType, own);
 	}
-	// Вызываем оригинальную функцию добавления, чтобы не крашнуло
+	// Вызываем оригинальную функцию, чтобы не крашнуло
 	return fpDoImpact(weapon, EDX, owner, victim, startPoint, endPoint, colPoint, arg5);
 }

@@ -1,8 +1,3 @@
-/*
-	SA:MP ASI Framework
-	Author: CentiuS
-*/
-
 #include "d3drender.h"
 
 IDirect3DDevice9 *CD3DBaseRender::		m_pD3Ddev = NULL;

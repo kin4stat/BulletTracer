@@ -1,8 +1,9 @@
-#ifndef WIN32_LEAN_AND_MEAN
+﻿#ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif // !WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #include "patcher.h"
+
 namespace patcher {
 	void setUChar(uint32_t addr, unsigned char setChar, bool virtualProtect)
 	{

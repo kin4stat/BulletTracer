@@ -1,5 +1,16 @@
 ﻿#pragma once
 
+enum eEntityType
+{
+	ENTITY_TYPE_NOTHING,
+	ENTITY_TYPE_BUILDING,
+	ENTITY_TYPE_VEHICLE,
+	ENTITY_TYPE_PED,
+	ENTITY_TYPE_OBJECT,
+	ENTITY_TYPE_DUMMY,
+	ENTITY_TYPE_NOTINPOOLS
+};
+
 typedef unsigned long DWORD;
 
 class CMouseControllerState {
@@ -17,23 +28,13 @@ public:
 	float Y;
 };
 
-enum eEntityType
-{
-	ENTITY_TYPE_NOTHING,
-	ENTITY_TYPE_BUILDING,
-	ENTITY_TYPE_VEHICLE,
-	ENTITY_TYPE_PED,
-	ENTITY_TYPE_OBJECT,
-	ENTITY_TYPE_DUMMY,
-	ENTITY_TYPE_NOTINPOOLS
-};
-
 struct CVector
 {
 	float x, y, z;
 };
 
 struct CEntity{
+	// Т.к. мне нужна только информация о типе объекта, я могу просто пропустить поля до него
 	char			CPlaceable[24];
 	char			field[30];
 	unsigned char	m_nType : 3; // see eEntityType
@@ -68,8 +69,4 @@ private:
 public:
 	// col depth
 	float         m_fDepth;
-
-	void operator=(CColPoint const& right);
 };
-
-bool ProcessLineOfSight(CVector const& origin, CVector const& target, CColPoint& outColPoint, CEntity*& outEntity, bool buildings, bool vehicles, bool peds, bool objects, bool dummies, bool doSeeThroughCheck, bool doCameraIgnoreCheck, bool doShootThroughCheck);

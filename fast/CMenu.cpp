@@ -1,18 +1,29 @@
 ﻿#include <Windows.h>
+#include <iostream>
 #include "CMenu.h"
 #include "dllmain.h"
 #include "patcher.h"
+
+/*
+	Темы для ImGui на C++ можно брать тут:
+	https://github.com/ocornut/imgui/issues/707
+*/
+
 #include "ImGui\\imgui.h"
 #include "ImGui\\imgui_impl_win32.h"
 #include "ImGui\\imgui_impl_dx9.h"
 #include "ImGui\\imgui_internal.h"
 #include "ImGui\\imgui_stdlib.h"
-#include <iostream>
 
+// Говорим компилятору, что в будущем такая структура будет определена
 struct IDirect3DDevice9;
 
+// Переменная для сохранения оригинального обработчика окна
 WNDPROC m_pWindowProc;
-
+/*
+	Вытаскиваем обработчик событий окна ImGui
+	Чтобы ImGui понимал что мы нажимаем на кнопочки
+*/
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 void show_cursor(bool show)
@@ -43,13 +54,16 @@ void show_cursor(bool show)
 	((void(__cdecl*)())(0x541DD0))(); // CPad::UpdatePads
 }
 
+// Сам обработчик событий
 auto __stdcall WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)->LRESULT {
 	
 	static bool buttonNotChanged = true;
 	switch (msg)
 	{
+	// При нажатия на кнопку
 	case WM_SYSKEYDOWN:
 	case WM_KEYDOWN:
+		// Если меню ждет нажатия кнопки
 		if (pMenu->bWaitingPressButton) {
 			int	iKey = (int)wParam;
 			uint32_t ScanCode = LOBYTE(HIWORD(lParam));
@@ -83,6 +97,7 @@ auto __stdcall WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			pConfig->sButtonName = TempBuf;
 			pMenu->bWaitingPressButton = false;
 			buttonNotChanged = false;
+			// Выходим из конструкции Switch - Case
 			break;
 		}
 		if (wParam == pConfig->iButtonMenuOpen) {
@@ -114,7 +129,6 @@ auto __stdcall WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			}
 		}
 		// Вызываем оригинальный обработчик событий окна
-		
 		return CallWindowProcA(m_pWindowProc, hWnd, msg, wParam, lParam);
 	}
 	// Чтобы не происходило лишних действий пока у нас активен выбор новой клавиши, мы просто говорим цепочке обработчиков событий, что событие успешно обработано
@@ -125,12 +139,15 @@ auto __stdcall WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 CMenu::CMenu(IDirect3DDevice9* pDevice) {
 	this->bMainMnState = false;
 	// Устанавливаем хук событий окна
+	// **(HWND**)0xC17054 -  HWND на главное окно игры, на него мы и вешаем обработчики
 	m_pWindowProc = (WNDPROC)SetWindowLongW(**(HWND**)0xC17054, GWL_WNDPROC, (LONG)WndProcHandler);
 	// Инициализируем ImGui
 	ImGui::CreateContext();
 	ImGui_ImplWin32_Init(**(HWND**)0xC17054);
 	ImGui::GetIO().MouseDoubleClickTime = 0.8f;
+	// Грузим шрифт с кириллическими начертаниями, что вместо русского текста не было знаков вопроса
 	ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Tahoma.TTF", 14.0f, NULL, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
+	// Применяем тему
 	this->Theme();
 	ImGui_ImplDX9_Init(pDevice);
 }
@@ -147,7 +164,7 @@ void CMenu::Render() {
 		ImGui::Begin("Настройки", &this->bMainMnState, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse);
 		ImGui::SliderInt("Время отображения трасера(В секундах)", &pConfig->iTracerTime, 0, 120);
 		if (ImGui::SliderInt("Кол-во отображаемых трасеров", &pConfig->iTracersCount, 0, 100)) {
-			// Защита от ввода слишком больших чисел
+			// Защита от ввода слишком больших чисел через CTRL + ЛКМ
 			if (pConfig->iTracersCount > 100 || pConfig->iTracersCount < 0) { pConfig->iTracersCount = 100; }
 		}
 		if (ImGui::CollapsingHeader("Свои пули")) {
@@ -165,14 +182,21 @@ void CMenu::Render() {
 			ImGui::Separator();
 		}
 		if (ImGui::InputText("Выбор кнопки открытия меню", &pConfig->sButtonName, ImGuiInputTextFlags_ReadOnly)) {
+			// Если редактирование закончено (на всякий случай)
 			this->bWaitingPressButton = false;
 		}
 		if (ImGui::IsItemClicked()) {
-			pConfig->sButtonName = "<Нажмите любую клавишу(ESC или ENTER для отмены)>";
+			// Ставим текст InputText;
+			pConfig->sButtonName = "< Нажмите любую клавишу (ESC или ENTER для отмены) >";
+			// Устанавливаем состояние в меню в ожидание нажатия клавиши
 			this->bWaitingPressButton = true;
 		}
+
+		// Высчитываем размер текста
 		float textSizeSum = ImGui::CalcTextSize("Сохранить настройки").x + ImGui::CalcTextSize("Загрузить настройки").x + ImGui::CalcTextSize("Настройки по-умолчанию").x;
+		// Суммируем с переменными стиля и получаем размеры кнопок
 		float buttonSizeSum = ImGui::GetStyle().WindowRounding * 6.0f + ImGui::GetStyle().ItemSpacing.x * 3.0f + textSizeSum;
+		// Центрируем кнопки
 		ImGui::SetCursorPosX(ImGui::GetWindowSize().x - buttonSizeSum);
 		if (ImGui::Button("Сохранить настройки")) {
 			pConfig->SaveSettings();
@@ -187,7 +211,7 @@ void CMenu::Render() {
 		if (ImGui::Button("Настройки по-умолчанию")) {
 			pConfig->LoadDefaults();
 		}
-
+		// Заканчиваем отрисовку окна
 		ImGui::End();
 	}
 	// Заканчиваем кадр

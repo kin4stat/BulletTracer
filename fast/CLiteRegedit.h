@@ -1,19 +1,13 @@
 #pragma once
 #include <windows.h>
 #include <string>
-
 #pragma comment (lib, "advapi32")
 
 /* 
+    Взято отсюда: https://www.blast.hk/threads/13855/
 
-Took from https://www.blast.hk/threads/13855/
-
-Thanks SR_Team
-
+    Спасибо SR_Team!
 */
-
-// Registry Value Types
-// https://msdn.microsoft.com/ru-ru/library/windows/desktop/ms724884(v=vs.85).aspx
 
 class CLiteRegedit
 {

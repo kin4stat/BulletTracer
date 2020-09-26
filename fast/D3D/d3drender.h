@@ -1,8 +1,3 @@
-/*
-	SA:MP ASI Framework
-	Author: CentiuS
-*/
-
 #ifndef _D3DRENDER_H
 #define _D3DRENDER_H
 #include <d3d9.h>
@@ -150,27 +145,18 @@ public:
 		return m_fChrHeight;
 	};
 private:
-	HRESULT					CreateVertexBuffers ();
-	HRESULT					DeleteVertexBuffers ();
-
 	char					m_szFontName[31 + 1];
 	int						m_fontHeight;
 	DWORD					m_dwCreateFlags;
-
 	bool					m_isReady;
-
 	IDirect3DTexture9		*m_pD3Dtex;
 	IDirect3DVertexBuffer9	*m_pD3Dbuf;
-
 	DWORD					m_maxTriangles;
-
 	int						m_texWidth, m_texHeight;
 	int						m_chrSpacing;
 	float					m_fTexCoords[224][4];
 	float					m_fChrHeight;
 };
-
-
 
 class CD3DRender : public CD3DBaseRender
 {
@@ -193,9 +179,6 @@ public:
 	void	D3DBoxi ( int x, int y, int w, int h, D3DCOLOR color, int maxW );
 	void	D3DBoxBorder ( float x, float y, float w, float h, D3DCOLOR border_color, D3DCOLOR color );
 	void	D3DBoxBorderi ( int x, int y, int w, int h, D3DCOLOR border_color, D3DCOLOR color );
-
-	//bool	DrawLine ( const D3DXVECTOR3 &a, const D3DXVECTOR3 &b, DWORD dwColor );
-	//void	DrawLine (float x1, float y1, float x2, float y2, float width, D3DCOLOR color);
 	void	Line(float x1, float y1, float x2, float y2, DWORD color);
 private:
 	D3DPRIMITIVETYPE		m_primType;

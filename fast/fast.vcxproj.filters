@@ -42,9 +42,6 @@
     <ClCompile Include="ImGui\imgui_widgets.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="game_sa.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="CMenu.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
