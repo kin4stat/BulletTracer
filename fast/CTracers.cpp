@@ -1,16 +1,16 @@
-#include "CTracers.h"
+п»ї#include "CTracers.h"
 #include "dllmain.h"
 #include "MinHook.h"
 #include <stdio.h>
 
-// Указатель на трамплин
-// Трамлин - штука которую можно вызвать, и тогда выполнится затертая хуком часть, и продолжится выполнение оригинальной функции
+// РЈРєР°Р·Р°С‚РµР»СЊ РЅР° С‚СЂР°РјРїР»РёРЅ
+// РўСЂР°РјР»РёРЅ - С€С‚СѓРєР° РєРѕС‚РѕСЂСѓСЋ РјРѕР¶РЅРѕ РІС‹Р·РІР°С‚СЊ, Рё С‚РѕРіРґР° РІС‹РїРѕР»РЅРёС‚СЃСЏ Р·Р°С‚РµСЂС‚Р°СЏ С…СѓРєРѕРј С‡Р°СЃС‚СЊ, Рё РїСЂРѕРґРѕР»Р¶РёС‚СЃСЏ РІС‹РїРѕР»РЅРµРЅРёРµ РѕСЂРёРіРёРЅР°Р»СЊРЅРѕР№ С„СѓРЅРєС†РёРё
 static CTracers::DoBulletImpact fpDoImpact = 0;
 
 CTracers::CTracers() {
-	// Устанавливаем хук на функцию CWeapon::DoBulletImpact
+	// РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј С…СѓРє РЅР° С„СѓРЅРєС†РёСЋ CWeapon::DoBulletImpact
 	MH_CreateHook((void*)0x73B550, &pTracers->DoBulletImpactHooked, reinterpret_cast<LPVOID*>(&fpDoImpact));
-	// Включаем хук
+	// Р’РєР»СЋС‡Р°РµРј С…СѓРє
 	MH_EnableHook((void*)0x73B550);
 }
 
@@ -18,8 +18,8 @@ CTracers::~CTracers() {
 	MH_DisableHook((void*)0x726AF0);
 }
 
-// Получает экранные координаты объекта по игровым
-// Возвращает, на экране ли объект
+// РџРѕР»СѓС‡Р°РµС‚ СЌРєСЂР°РЅРЅС‹Рµ РєРѕРѕСЂРґРёРЅР°С‚С‹ РѕР±СЉРµРєС‚Р° РїРѕ РёРіСЂРѕРІС‹Рј
+// Р’РѕР·РІСЂР°С‰Р°РµС‚, РЅР° СЌРєСЂР°РЅРµ Р»Рё РѕР±СЉРµРєС‚
 bool CTracers::GetScreenCoords(float& x, float& y, float& z, CVector* vecWorld)
 {
 	D3DXVECTOR3 vecScreen;
@@ -42,13 +42,13 @@ bool CTracers::GetScreenCoords(float& x, float& y, float& z, CVector* vecWorld)
 	return vecScreen.z >= 1.0f;
 }
 
-// Переводит float[3/4] (ImGui) в D3DCOLOR (d3d9hook)
+// РџРµСЂРµРІРѕРґРёС‚ float[3/4] (ImGui) РІ D3DCOLOR (d3d9hook)
 DWORD CTracers::floatToHex(float* color, bool colType) {
 	if (colType)
 		return D3DCOLOR_ARGB(static_cast<int>(color[3] * 255.0f), static_cast<int>(color[0] * 255.0f), static_cast<int>(color[1] * 255.0f), static_cast<int>(color[2] * 255.0f));
 	return D3DCOLOR_XRGB(static_cast<int>(color[0] * 255.0f), static_cast<int>(color[1] * 255.0f), static_cast<int>(color[2] * 255.0f));
 }
-// Рендер трасеров
+// Р РµРЅРґРµСЂ С‚СЂР°СЃРµСЂРѕРІ
 void CTracers::Render() {
 	
 	for (int i = 0; i < pConfig->iTracersCount; i++) {
@@ -66,13 +66,13 @@ void CTracers::Render() {
 		}
 	}
 }
-// Смещает массив с трасерами и заменяет первый трасер новым
+// РЎРјРµС‰Р°РµС‚ РјР°СЃСЃРёРІ СЃ С‚СЂР°СЃРµСЂР°РјРё Рё Р·Р°РјРµРЅСЏРµС‚ РїРµСЂРІС‹Р№ С‚СЂР°СЃРµСЂ РЅРѕРІС‹Рј
 void CTracers::AddTracer(CVector origin, CVector target, unsigned char eType, unsigned char bOwner) {
-	// Сдвигаем массив
+	// РЎРґРІРёРіР°РµРј РјР°СЃСЃРёРІ
 	for (int i = 99; i > 0; i--) {
 		tracers[i] = tracers[i - 1];
 	}
-	// Просто по приколу проверяем
+	// РџСЂРѕСЃС‚Рѕ РїРѕ РїСЂРёРєРѕР»Сѓ РїСЂРѕРІРµСЂСЏРµРј
 	if (eType != ENTITY_TYPE_NOTHING) {
 		tracers[0].eType = eType;
 		tracers[0].fOrigin = origin;
@@ -82,15 +82,15 @@ void CTracers::AddTracer(CVector origin, CVector target, unsigned char eType, un
 	}
 }
 
-// Собственно сама функция хука, чтобы узнать почему здесь __fastcall и непонятный аргумент void* EDX - смотреть CTracers.h
+// РЎРѕР±СЃС‚РІРµРЅРЅРѕ СЃР°РјР° С„СѓРЅРєС†РёСЏ С…СѓРєР°, С‡С‚РѕР±С‹ СѓР·РЅР°С‚СЊ РїРѕС‡РµРјСѓ Р·РґРµСЃСЊ __fastcall Рё РЅРµРїРѕРЅСЏС‚РЅС‹Р№ Р°СЂРіСѓРјРµРЅС‚ void* EDX - СЃРјРѕС‚СЂРµС‚СЊ CTracers.h
 void __fastcall CTracers::DoBulletImpactHooked(void* weapon, void* EDX, CEntity* owner, CEntity* victim, CVector* startPoint, CVector* endPoint, CColPoint* colPoint, int arg5) {
-	// Проверяем, попала ли пуля куда-то, иначе нас крашнет
+	// РџСЂРѕРІРµСЂСЏРµРј, РїРѕРїР°Р»Р° Р»Рё РїСѓР»СЏ РєСѓРґР°-С‚Рѕ, РёРЅР°С‡Рµ РЅР°СЃ РєСЂР°С€РЅРµС‚
 	if (victim != nullptr) {
-		// Проверяем кто выпустил пулю игрок, или другой пед
+		// РџСЂРѕРІРµСЂСЏРµРј РєС‚Рѕ РІС‹РїСѓСЃС‚РёР» РїСѓР»СЋ РёРіСЂРѕРє, РёР»Рё РґСЂСѓРіРѕР№ РїРµРґ
 		unsigned char own = (owner == *(CEntity**)0xB6F5F0) ? CTracers::ownerType::OWNER_LOCALPLAYER: CTracers::ownerType::OWNER_NOTLOCALPLAYER;
-		// Добавляем трасер
+		// Р”РѕР±Р°РІР»СЏРµРј С‚СЂР°СЃРµСЂ
 		pTracers->AddTracer(*startPoint, colPoint->m_vecPoint, victim->m_nType, own);
 	}
-	// Вызываем оригинальную функцию добавления, чтобы не крашнуло
+	// Р’С‹Р·С‹РІР°РµРј РѕСЂРёРіРёРЅР°Р»СЊРЅСѓСЋ С„СѓРЅРєС†РёСЋ РґРѕР±Р°РІР»РµРЅРёСЏ, С‡С‚РѕР±С‹ РЅРµ РєСЂР°С€РЅСѓР»Рѕ
 	return fpDoImpact(weapon, EDX, owner, victim, startPoint, endPoint, colPoint, arg5);
 }
