@@ -1,4 +1,4 @@
-﻿#include "dllmain.h"
+﻿#include "dllmain.hpp"
 /* 
 	Для хуков будем использовать MinHook
 	https://github.com/TsudaKageyu/minhook

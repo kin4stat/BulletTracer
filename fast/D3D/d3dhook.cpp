@@ -1,6 +1,6 @@
 ﻿#include <windows.h>
 #include "d3dhook.h"
-#include "..\\dllmain.h"
+#include "..\\dllmain.hpp"
 #include "..\\ImGui\\imgui_impl_dx9.h"
 
 HRESULT __stdcall CD3DHook::Hooked_Present(IDirect3DDevice9* pDevice, CONST RECT* pSrcRect, CONST RECT* pDestRect, HWND hDestWindow, CONST RGNDATA* pDirtyRegion)

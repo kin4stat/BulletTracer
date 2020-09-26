@@ -1,11 +1,18 @@
 ﻿#include "CTracers.h"
-#include "dllmain.h"
+#include "dllmain.hpp"
 #include "MinHook.h"
 #include <stdio.h>
 
 // Указатель на трамплин
 // Трамлин - штука которую можно вызвать, и тогда выполнится затертая хуком часть, и продолжится выполнение оригинальной функции
 static CTracers::DoBulletImpact fpDoImpact = 0;
+
+class CWeapon {
+public:
+	char field;
+
+	void __thiscall DoBulletImpactHooked(void* weapon, void* EDX, CEntity* owner, CEntity* victim, CVector* startPoint, CVector* endPoint, CColPoint* colPoint, int arg5);
+};
 
 // Конструктор
 CTracers::CTracers() {
