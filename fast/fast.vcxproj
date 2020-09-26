@@ -191,8 +191,7 @@
     <ClInclude Include="CTracers.h" />
     <ClInclude Include="D3D\d3dhook.h" />
     <ClInclude Include="D3D\d3drender.h" />
-    <ClInclude Include="D3D\detours.h" />
-    <ClInclude Include="dllmain.h" />
+    <ClInclude Include="dllmain.hpp" />
     <ClInclude Include="game_sa.h" />
     <ClInclude Include="ImGui\imconfig.h" />
     <ClInclude Include="ImGui\imgui.h" />
@@ -207,7 +206,6 @@
     <ClInclude Include="patcher.h" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="D3D\detours.lib" />
     <Library Include="libMinHook-x86-v141-md.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

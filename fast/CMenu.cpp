@@ -1,7 +1,7 @@
 ﻿#include <Windows.h>
 #include <iostream>
 #include "CMenu.h"
-#include "dllmain.h"
+#include "dllmain.hpp"
 #include "patcher.h"
 
 /*
@@ -46,7 +46,7 @@ void show_cursor(bool show)
 		patcher::setUChar(0x6194A0, 0xE9, true); // jmp setup
 		(*(IDirect3DDevice9**)0xC97C28)->ShowCursor(false);
 		ImGui::GetIO().MouseDrawCursor = false;
-		ShowCursor(false);
+		//ShowCursor(false);
 	}
 	(*reinterpret_cast<CMouseControllerState*>(0xB73418)).X = 0.0f;
 	(*reinterpret_cast<CMouseControllerState*>(0xB73418)).Y = 0.0f;

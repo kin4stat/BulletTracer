@@ -19,16 +19,17 @@ HRESULT __stdcall CD3DHook::Hooked_Present(IDirect3DDevice9* pDevice, CONST RECT
 		pD3DHook->bD3DRenderInit = true;
 	}
 	// Проверяем, инициализировалась ли игра
-	if (*(BYTE*)0xC8D4C0 == 9) {
+	if (*(BYTE*)0xC8D4C0 == 5) {
 		// static означает что переменная останется в памяти до закрытия программы
 		static bool inited = false;
-
 		if (!inited) {
 			// Инициализируем меню единожды
 			pMenu = new CMenu(pDevice);
 			// Отмечаем что инициализировались
 			inited = true;
 		}
+	}
+	if (*(BYTE*)0xC8D4C0 == 9) {
 		// Рисуем наше меню и трасера
 		pMenu->Render();
 		pTracers->Render();

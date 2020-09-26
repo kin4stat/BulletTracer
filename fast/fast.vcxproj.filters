@@ -65,9 +65,6 @@
     <ClInclude Include="game_sa.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="D3D\detours.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="D3D\d3drender.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -98,9 +95,6 @@
     <ClInclude Include="ImGui\imstb_truetype.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="dllmain.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="MinHook.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -122,9 +116,11 @@
     <ClInclude Include="ImGui\imgui_stdlib.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="dllmain.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="D3D\detours.lib" />
     <Library Include="libMinHook-x86-v141-md.lib" />
   </ItemGroup>
 </Project>
