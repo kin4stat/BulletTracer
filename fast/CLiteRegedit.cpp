@@ -1,4 +1,4 @@
-#include "CLiteRegedit.h"
+﻿#include "CLiteRegedit.h"
 #include <string>
 #include <stdio.h>
 

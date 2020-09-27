@@ -1,12 +1,12 @@
-#pragma once
+п»ї#pragma once
 #include <windows.h>
 #include <string>
 #pragma comment (lib, "advapi32")
 
 /* 
-    Взято отсюда: https://www.blast.hk/threads/13855/
+    Р’Р·СЏС‚Рѕ РѕС‚СЃСЋРґР°: https://www.blast.hk/threads/13855/
 
-    Спасибо SR_Team!
+    РЎРїР°СЃРёР±Рѕ SR_Team!
 */
 
 class CLiteRegedit
